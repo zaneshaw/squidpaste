@@ -1,0 +1,8 @@
+{
+	"useTabs": true,
+	"trailingComma": "none",
+	"printWidth": 160,
+	"plugins": ["prettier-plugin-tailwindcss"],
+	"pluginSearchDirs": ["."],
+	"overrides": [{ "files": "*.vue", "options": { "parser": "vue" } }]
+}
