@@ -4,14 +4,22 @@
 
 @layer base {
 	html {
-		@apply bg-neutral-900 font-mono text-white;
+		@apply bg-[#1e1e1e] font-mono tracking-wider text-neutral-300;
 	}
 
 	h1 {
-		@apply text-5xl;
+		@apply text-4xl tracking-wider text-white;
 	}
 
 	h2 {
-		@apply text-xl;
+		@apply text-lg tracking-wider;
+	}
+
+	a {
+		@apply underline;
+	}
+
+	input::placeholder {
+		@apply text-neutral-600;
 	}
 }
