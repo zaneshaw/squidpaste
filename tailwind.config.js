@@ -2,7 +2,11 @@
 export default {
 	content: ["./src/**/*.{html,js,vue,ts}"],
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				mono: ['"Roboto Mono"', "mono"]
+			}
+		}
 	},
 	plugins: []
 };
