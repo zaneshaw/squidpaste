@@ -10,13 +10,13 @@
 			<router-view />
 		</div>
 		<div class="flex justify-center gap-2 text-sm [&>span]:font-bold [&>span]:text-neutral-600">
-			<a href="/">New Paste</a>
+			<router-link :to="{ path: '/' }">New Paste</router-link>
 			<span>/</span>
-			<a href="/help">Help</a>
+			<router-link :to="{ path: '/help' }">Help</router-link>
 			<span>/</span>
-			<a href="/help#api">API</a>
+			<router-link :to="{ path: '/help', hash: '#api' }">API</router-link>
 			<span>/</span>
-			<a href="/security">Security Disclaimer</a>
+			<router-link :to="{ path: '/security' }">Security Disclaimer</router-link>
 		</div>
 	</div>
 </template>
