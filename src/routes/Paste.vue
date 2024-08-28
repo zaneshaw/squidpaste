@@ -39,7 +39,7 @@ async function fetchData() {
 			<span class="text-xs text-neutral-400">{{ new Date(paste.dateModified).toLocaleString("en-US", { hour12: true }) }}</span>
 		</div>
 		<div class="flex grow flex-col overflow-hidden rounded-sm bg-neutral-900 text-left ring-1 ring-neutral-700">
-			<div v-html="paste.content" class="h-full w-full grow resize-none bg-transparent px-3 py-1.5 text-xs outline-none"></div>
+			<div v-html="paste.content" class="flex h-0 w-full grow overflow-y-scroll break-all bg-transparent px-3 py-1.5 text-xs outline-none"></div>
 			<div class="flex justify-between border-t border-neutral-700 px-3 py-1.5 text-xs text-neutral-400">
 				<span>Plain text</span>
 				<span>12 characters | ~1 KB</span>
