@@ -9,7 +9,7 @@ const pasteContent = ref("");
 async function onNewPaste() {
 	try {
 		const id = await newPaste(pasteTitle.value, pasteContent.value);
-		router.push({ path: `/p/${id}` })
+		router.push({ path: `/${id}` })
 	} catch (err) {
 		// console.log(err);
 	}

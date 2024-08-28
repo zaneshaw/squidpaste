@@ -15,7 +15,7 @@ export const router = createRouter({
 		{ path: "/", component: Home },
 		{ path: "/help", component: Help },
 		{ path: "/security", component: Security },
-		{ path: "/p/:pasteId", component: Paste },
+		{ path: "/:pasteId", component: Paste },
 		{ path: "/:error(.*)", component: Error }
 	]
 });

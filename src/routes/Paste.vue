@@ -1,22 +1,22 @@
-<script setup>
-import { ref, watch } from "vue";
+<script setup lang="ts">
+import { Ref, ref, watch } from "vue";
 import { getPaste } from "../api.ts";
 import { useRoute } from "vue-router";
 
 const loading = ref(false);
-const paste = ref(null);
-const error = ref(null);
+const paste: Ref<any> = ref(null);
+const error: Ref<any> = ref(null);
 
 const route = useRoute();
 
 watch(() => route.params.pasteId, fetchData, { immediate: true });
 
-async function fetchData(id) {
+async function fetchData() {
 	error.value = paste.value = null;
 	loading.value = true;
 
 	try {
-		paste.value = await getPaste(route.params.pasteId);
+		paste.value = await getPaste(route.params?.pasteId as string);
 	} catch (err) {
 		error.value = err;
 	} finally {
