@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { router } from "../main";
+import { newPaste } from "../api";
 
 const pasteTitle = ref("");
+const pasteContent = ref("");
 
-function test() {
-	// todo: create paste
-	const pathId = "ID123";
-
-	router.push({ path: `/p/${pathId}` })
+async function onNewPaste() {
+	try {
+		const id = await newPaste(pasteTitle.value, pasteContent.value);
+		router.push({ path: `/p/${id}` })
+	} catch (err) {
+		// console.log(err);
+	}
 }
 </script>
 
@@ -27,7 +31,7 @@ function test() {
 				/>
 				<span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-2xs">{{ pasteTitle.length }}/48</span>
 			</label>
-			<textarea class="h-full w-full grow resize-none bg-transparent px-3 py-1.5 text-xs outline-none">text content&#10;[link](https://example.com)</textarea>
+			<textarea v-model="pasteContent" class="h-full w-full grow resize-none bg-transparent px-3 py-1.5 text-xs outline-none">text content&#10;[link](https://example.com)</textarea>
 			<div class="flex justify-between border-t border-neutral-700 px-3 py-1.5 text-xs text-neutral-400">
 				<select class="-ml-1 bg-transparent outline-none [&>*]:bg-neutral-900">
 					<option>Plain text</option>
@@ -44,7 +48,7 @@ function test() {
 				<div class="flex aspect-square h-full items-center justify-center bg-neutral-700 text-sm">🔒</div>
 				<input type="password" placeholder="Optional password" maxlength="32" class="grow bg-neutral-900 px-2 text-sm outline-none" />
 			</div>
-			<button @click="test" class="rounded-sm bg-neutral-700 px-5 py-0.5 text-sm text-white transition-colors duration-75 hover:bg-neutral-600">Create paste</button>
+			<button @click="onNewPaste" class="rounded-sm bg-neutral-700 px-5 py-0.5 text-sm text-white transition-colors duration-75 hover:bg-neutral-600">Create paste</button>
 		</div>
 		<div class="flex flex-col gap-2 text-2xs text-neutral-400">
 			<div>
