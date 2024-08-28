@@ -2,6 +2,7 @@
 import { Ref, ref, watch } from "vue";
 import { getPaste } from "../api.ts";
 import { useRoute } from "vue-router";
+import { DateTime } from "luxon";
 
 const loading = ref(false);
 const paste: Ref<any> = ref(null);
@@ -36,7 +37,7 @@ async function fetchData() {
 	<template v-else-if="paste">
 		<div class="mb-1.5 flex justify-between px-2">
 			<span class="text-xs">{{ paste.title }}</span>
-			<span class="text-xs text-neutral-400">{{ new Date(paste.dateModified).toLocaleString("en-US", { hour12: true }) }}</span>
+			<span class="text-xs text-neutral-400">{{ DateTime.fromISO(paste.dateModified).toRelative() }}</span>
 		</div>
 		<div class="flex grow flex-col overflow-hidden rounded-sm bg-neutral-900 text-left ring-1 ring-neutral-700">
 			<div v-html="paste.content" class="flex h-0 w-full grow overflow-y-scroll break-all bg-transparent px-3 py-1.5 text-xs outline-none"></div>
