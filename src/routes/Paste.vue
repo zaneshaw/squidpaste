@@ -8,7 +8,15 @@ const loading = ref(false);
 const paste: Ref<any> = ref(null);
 const error: Ref<any> = ref(null);
 
-const pasteDate = computed(() => DateTime.fromISO(paste.value.dateModified).toRelative());
+const pasteDate = computed(() => {
+	const date = DateTime.fromISO(paste.value.dateModified);
+	const secondsAgo = Math.abs(date.diffNow().as("seconds"));
+	if (secondsAgo < 60) {
+		return "Just now";
+	} else {
+		return date.toRelative();
+	}
+});
 const pasteChars = computed(() => paste.value.content.length);
 const pasteSize = computed(() => Math.ceil(pasteChars.value / 1000));
 
@@ -40,7 +48,8 @@ async function fetchData() {
 	</template>
 	<template v-else-if="paste">
 		<div class="mb-1.5 flex justify-between px-2">
-			<span class="text-xs">{{ paste.title }}</span>
+			<span v-if="paste.title" class="text-xs">{{ paste.title }}</span>
+			<span v-else class="text-xs italic text-neutral-500">Unnamed Paste</span>
 			<span class="text-xs text-neutral-400">{{ pasteDate }}</span>
 		</div>
 		<div class="flex grow flex-col overflow-hidden rounded-sm bg-neutral-900 text-left ring-1 ring-neutral-700">
