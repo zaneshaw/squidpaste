@@ -17,8 +17,8 @@ const pasteDate = computed(() => {
 		return date.toRelative();
 	}
 });
-const pasteChars = computed(() => paste.value.content.length);
-const pasteSize = computed(() => Math.ceil(pasteChars.value / 1000));
+const pasteChars = computed(() => paste.value.length);
+const pasteSize = computed(() => Math.ceil(new Blob([paste.value]).size / 1000));
 
 const route = useRoute();
 
@@ -56,7 +56,7 @@ async function fetchData() {
 			<div v-html="paste.content" class="flex h-0 w-full grow overflow-y-scroll break-all bg-transparent px-3 py-1.5 text-xs outline-none"></div>
 			<div class="flex justify-between border-t border-neutral-700 px-3 py-1.5 text-xs text-neutral-400">
 				<span>Plain text</span>
-				<span>{{ pasteChars }} characters | ~{{ pasteSize }} KB</span>
+				<span>{{ pasteChars }} characters | {{ pasteSize }} KB</span>
 			</div>
 		</div>
 	</template>
