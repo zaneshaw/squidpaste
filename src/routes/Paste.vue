@@ -80,13 +80,7 @@ async function share() {
 					v-model="password"
 					class="grow rounded-sm bg-neutral-900 px-2 text-sm outline-none ring-1 ring-neutral-700"
 				/>
-				<button
-					type="button"
-					@click="unlock"
-					class="rounded-sm bg-neutral-700 px-5 py-0.5 text-sm text-white transition-colors duration-75 hover:bg-neutral-600"
-				>
-					Unlock
-				</button>
+				<button type="button" @click="unlock" class="btn">Unlock</button>
 			</div>
 		</div>
 		<div class="flex grow flex-col opacity-50 blur-[2px]">

@@ -63,9 +63,7 @@ text content&#10;[link](https://example.com)</textarea
 				<div class="flex aspect-square h-full items-center justify-center bg-neutral-700 text-sm">🔒</div>
 				<input type="password" placeholder="Optional password" maxlength="32" v-model="password" class="grow bg-neutral-900 px-2 text-sm outline-none" />
 			</div>
-			<button @click="onNewPaste" class="rounded-sm bg-neutral-700 px-5 py-0.5 text-sm text-white transition-colors duration-75 hover:bg-neutral-600">
-				Create paste
-			</button>
+			<button @click="onNewPaste" class="btn">Create paste</button>
 		</div>
 		<div class="flex flex-col gap-2 text-2xs text-neutral-400">
 			<div>
