@@ -5,13 +5,14 @@ import { newPaste } from "../api";
 
 const pasteTitle = ref("");
 const pasteContent = ref("");
+const password = ref("");
 
 const pasteChars = computed(() => pasteContent.value.length);
 const pasteSize = computed(() => Math.ceil(new Blob([pasteContent.value]).size / 1000));
 
 async function onNewPaste() {
 	try {
-		const id = await newPaste(pasteTitle.value, pasteContent.value);
+		const id = await newPaste(pasteTitle.value, pasteContent.value, password.value);
 		router.push({ path: `/${id}` });
 	} catch (err) {
 		// console.log(err);
@@ -60,7 +61,7 @@ text content&#10;[link](https://example.com)</textarea
 		<div class="flex gap-2">
 			<div class="flex grow overflow-hidden rounded-sm ring-1 ring-neutral-700">
 				<div class="flex aspect-square h-full items-center justify-center bg-neutral-700 text-sm">🔒</div>
-				<input type="password" placeholder="Optional password" maxlength="32" class="grow bg-neutral-900 px-2 text-sm outline-none" />
+				<input type="password" placeholder="Optional password" maxlength="32" v-model="password" class="grow bg-neutral-900 px-2 text-sm outline-none" />
 			</div>
 			<button @click="onNewPaste" class="rounded-sm bg-neutral-700 px-5 py-0.5 text-sm text-white transition-colors duration-75 hover:bg-neutral-600">
 				Create paste
