@@ -3,7 +3,6 @@ import { computed, Ref, ref, watch } from "vue";
 import { getPaste, PasteError } from "../api.ts";
 import { useRoute } from "vue-router";
 import { DateTime } from "luxon";
-import { useClipboard } from "@vueuse/core";
 import Paste from "../components/Paste.vue";
 
 const loading = ref(false);
@@ -12,8 +11,6 @@ const paste: Ref<any> = ref(null);
 const error: Ref<PasteError | null> = ref(null);
 
 const password = ref("");
-
-const { copy } = useClipboard();
 
 const pasteDate = computed(() => {
 	const date = DateTime.fromISO(paste.value.dateModified);
@@ -57,11 +54,6 @@ async function unlock() {
 		fetchData(password.value);
 	}
 }
-
-async function share() {
-	copy(window.location.href);
-	alert("Copied to clipboard.");
-}
 </script>
 
 <template>
@@ -95,6 +87,6 @@ async function share() {
 		<span class="text-sm">{{ error.message }}</span>
 	</template>
 	<template v-else-if="paste">
-		<Paste :title="paste.title || 'Unnamed Paste'" :content="paste.content" :date="pasteDate" :chars="pasteChars" :size="pasteSize" :deadTitle="!paste.title" />
+		<Paste :title="paste.title || 'Unnamed Paste'" :content="paste.content" :date="pasteDate ?? undefined" :chars="pasteChars" :size="pasteSize" :deadTitle="!paste.title" />
 	</template>
 </template>
