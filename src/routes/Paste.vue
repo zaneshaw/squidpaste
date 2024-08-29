@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, Ref, ref, watch } from "vue";
-import { getPaste, PasteError } from "../api.ts";
+import { computed, ref, watch, type Ref } from "vue";
+import { getPaste, type PasteError } from "../api.ts";
 import { useRoute } from "vue-router";
 import { DateTime } from "luxon";
 import Paste from "../components/Paste.vue";
