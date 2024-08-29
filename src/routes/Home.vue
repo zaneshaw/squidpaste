@@ -29,12 +29,21 @@ async function onNewPaste() {
 					maxlength="48"
 					id="paste-title"
 					placeholder="A very cool name"
+					autocomplete="off"
+					data-1p-ignore
+					data-lpignore="true"
 					v-model="pasteTitle"
 					class="w-full grow bg-transparent text-xs text-neutral-300 outline-none"
 				/>
 				<span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-2xs">{{ pasteTitle.length }}/48</span>
 			</label>
-			<textarea v-model="pasteContent" class="h-full w-full grow resize-none bg-transparent px-3 py-1.5 text-xs outline-none">
+			<textarea
+				autocomplete="off"
+				data-1p-ignore
+				data-lpignore="true"
+				v-model="pasteContent"
+				class="h-full w-full grow resize-none bg-transparent px-3 py-1.5 text-xs outline-none"
+			>
 text content&#10;[link](https://example.com)</textarea
 			>
 			<div class="flex justify-between border-t border-neutral-700 px-3 py-1.5 text-xs text-neutral-400">
