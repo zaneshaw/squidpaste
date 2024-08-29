@@ -3,6 +3,7 @@ import { computed, Ref, ref, watch } from "vue";
 import { getPaste, PasteError } from "../api.ts";
 import { useRoute } from "vue-router";
 import { DateTime } from "luxon";
+import { useClipboard } from "@vueuse/core";
 
 const loading = ref(false);
 const authorised = ref(true);
@@ -10,6 +11,8 @@ const paste: Ref<any> = ref(null);
 const error: Ref<PasteError | null> = ref(null);
 
 const password = ref("");
+
+const { copy } = useClipboard();
 
 const pasteDate = computed(() => {
 	const date = DateTime.fromISO(paste.value.dateModified);
@@ -52,6 +55,11 @@ async function unlock() {
 	if (!authorised.value) {
 		fetchData(password.value);
 	}
+}
+
+async function share() {
+	copy(window.location.href);
+	alert("Copied to clipboard.");
 }
 </script>
 
@@ -104,7 +112,7 @@ async function unlock() {
 		<div class="mb-1.5 flex justify-between px-2">
 			<span v-if="paste.title" class="text-xs">{{ paste.title }}</span>
 			<span v-else class="text-xs italic text-neutral-500">Unnamed Paste</span>
-			<span class="text-xs text-neutral-400">{{ pasteDate }}</span>
+			<span class="text-xs text-neutral-400"><button @click="share" class="underline">Share</button> | {{ pasteDate }}</span>
 		</div>
 		<div class="flex grow flex-col overflow-hidden rounded-sm bg-neutral-900 text-left ring-1 ring-neutral-700">
 			<div v-html="paste.content" class="flex h-0 w-full grow overflow-y-scroll break-all bg-transparent px-3 py-1.5 text-xs outline-none"></div>
