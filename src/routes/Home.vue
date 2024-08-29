@@ -12,7 +12,7 @@ const pasteSize = computed(() => Math.ceil(new Blob([pasteContent.value]).size /
 
 async function onNewPaste() {
 	try {
-		const id = await newPaste(pasteTitle.value, pasteContent.value, password.value);
+		const id = await newPaste(pasteTitle.value, pasteContent.value, "plain-text", password.value);
 		router.push({ path: `/${id}` });
 	} catch (err) {
 		// console.log(err);
@@ -50,10 +50,6 @@ text content&#10;[link](https://example.com)</textarea
 			<div class="flex justify-between border-t border-neutral-700 px-3 py-1.5 text-xs text-neutral-400">
 				<select class="-ml-1 bg-transparent outline-none [&>*]:bg-neutral-900">
 					<option>Plain text</option>
-					<option>C</option>
-					<option>C++</option>
-					<option>C#</option>
-					<option>JavaScript</option>
 				</select>
 				<span>{{ pasteChars }} characters | {{ pasteSize }} KB</span>
 			</div>

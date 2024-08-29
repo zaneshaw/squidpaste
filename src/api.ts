@@ -24,7 +24,7 @@ export async function getPaste(id: string, password: string | undefined = undefi
 }
 
 // todo: password regex
-export async function newPaste(title: string, content: string, password: string) {
+export async function newPaste(title: string, content: string, language: "plain-text", password: string) {
 	const res = await fetch(`https://api-paste.squidee.dev/new`, {
 		method: "POST",
 		mode: "cors",
@@ -32,7 +32,7 @@ export async function newPaste(title: string, content: string, password: string)
 			Accept: "application/json",
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ title, content, password })
+		body: JSON.stringify({ title, content, language, password })
 	});
 
 	if (res.ok) {
