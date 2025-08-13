@@ -17,30 +17,15 @@ export async function getPaste(id: string, password: string | undefined = undefi
 		const paste = await res.json();
 
 		if (paste.encrypted) {
-			const saltBuffer = base64ToArrayBuffer(paste.salt);
-			const ivBuffer = base64ToArrayBuffer(paste.iv);
-			const contentBuffer = base64ToArrayBuffer(paste.content);
+			if (!password) throw { status: 401, message: "No password" } as PasteError;
 
-			const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), { name: "PBKDF2" }, false, ["deriveKey"]);
-			const derivedKey = await crypto.subtle.deriveKey(
-				{
-					name: "PBKDF2",
-					salt: saltBuffer,
-					iterations: 100000,
-					hash: "SHA-256"
-				},
-				key,
-				{ name: "AES-GCM", length: 256 },
-				true,
-				["encrypt", "decrypt"]
-			);
+			const salt = base64ToArrayBuffer(paste.salt);
+			const titleIV = base64ToArrayBuffer(paste.title_iv);
+			const contentIV = base64ToArrayBuffer(paste.content_iv);
 
 			try {
-				const decryptedContent = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: ivBuffer }, derivedKey, contentBuffer);
-				let content = new TextDecoder().decode(decryptedContent);
-				content = content.slice(0, content.lastIndexOf("~", content.lastIndexOf("~") - 1));
-
-				paste.content = content;
+				paste.title = await decrypt(base64ToArrayBuffer(paste.title), password, salt, titleIV);
+				paste.content = await decrypt(base64ToArrayBuffer(paste.content), password, salt, contentIV);
 			} catch (err) {
 				throw { status: 401, message: "Incorrect password" } as PasteError;
 			}
@@ -61,40 +46,19 @@ export async function newPaste(title: string, content: string, language: "plain-
 	if (title.length == 0 || content.length == 0) throw { status: 400, message: "Missing fields" };
 
 	if (password) {
-		// stored in plain text on the database
-		// only used to prevent an incorrect password from being used, which would yield a malformed paste
-		const magic = `~SQUIDPASTE_MAGIC${String.fromCharCode(...crypto.getRandomValues(new Uint8Array(8)))
-			.split("~")
-			.join("")}~`;
-		const data = new TextEncoder().encode(content + magic);
 		const salt = crypto.getRandomValues(new Uint8Array(16));
-
-		const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), { name: "PBKDF2" }, false, ["deriveKey"]);
-		const derivedKey = await crypto.subtle.deriveKey(
-			{
-				name: "PBKDF2",
-				salt: salt,
-				iterations: 100000,
-				hash: "SHA-256"
-			},
-			key,
-			{ name: "AES-GCM", length: 256 },
-			true,
-			["encrypt", "decrypt"]
-		);
-
-		const iv = crypto.getRandomValues(new Uint8Array(12));
-		const encryptedContent = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, derivedKey, data);
+		const titleIV = crypto.getRandomValues(new Uint8Array(12));
+		const contentIV = crypto.getRandomValues(new Uint8Array(12));
 
 		body = {
 			version,
 			encrypted: true,
-			title,
-			content: btoa(String.fromCharCode(...new Uint8Array(encryptedContent))),
+			title: await encrypt(title, password, salt, titleIV),
+			content: await encrypt(content, password, salt, contentIV),
 			language,
-			iv: btoa(String.fromCharCode(...iv)),
-			salt: btoa(String.fromCharCode(...salt)),
-			magic
+			title_iv: btoa(String.fromCharCode(...titleIV)),
+			content_iv: btoa(String.fromCharCode(...contentIV)),
+			salt: btoa(String.fromCharCode(...salt))
 		};
 	} else {
 		body = {
@@ -131,4 +95,34 @@ function base64ToArrayBuffer(str: string) {
 			.split("")
 			.map((char) => char.charCodeAt(0))
 	);
+}
+
+async function deriveKey(password: string, salt: Uint8Array<ArrayBuffer>) {
+	const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), { name: "PBKDF2" }, false, ["deriveKey"]);
+	return await crypto.subtle.deriveKey(
+		{
+			name: "PBKDF2",
+			salt,
+			iterations: 100000,
+			hash: "SHA-256"
+		},
+		key,
+		{ name: "AES-GCM", length: 256 },
+		true,
+		["encrypt", "decrypt"]
+	);
+}
+
+async function encrypt(data: string, password: string, salt: Uint8Array<ArrayBuffer>, iv: Uint8Array<ArrayBuffer>) {
+	const derivedKey = await deriveKey(password, salt);
+	const encryptedData = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, derivedKey, new TextEncoder().encode(data));
+
+	return btoa(String.fromCharCode(...new Uint8Array(encryptedData)));
+}
+
+async function decrypt(data: Uint8Array<ArrayBuffer>, password: string, salt: Uint8Array<ArrayBuffer>, iv: Uint8Array<ArrayBuffer>) {
+	const derivedKey = await deriveKey(password, salt);
+	const decryptedData = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv }, derivedKey, data);
+
+	return new TextDecoder().decode(decryptedData);
 }

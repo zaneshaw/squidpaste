@@ -66,7 +66,7 @@ text content&#10;[link](https://example.com)</textarea
 		<div class="flex flex-col gap-2 text-neutral-400">
 			<div>
 				<p class="text-2xs">Pastes are fully anonymous and stored permanently.</p>
-				<p class="text-2xs">Encrypt pastes that contain sensitive information.</p>
+				<p class="text-2xs">Please encrypt pastes that contain sensitive information.</p>
 			</div>
 			<p class="text-2xs">Pastes are limited to a maximum size of 128 KB.</p>
 		</div>
