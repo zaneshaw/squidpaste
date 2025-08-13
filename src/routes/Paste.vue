@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, type Ref } from "vue";
-import { getPaste, type PasteError } from "../api.ts";
+import { getPaste, type PasteError } from "../api";
 import { useRoute } from "vue-router";
 import { DateTime } from "luxon";
 import Paste from "../components/Paste.vue";
@@ -44,6 +44,8 @@ async function fetchData(password: string | undefined = undefined) {
 		if (error.value?.status == 401) {
 			authorised.value = false;
 		}
+
+		console.error(err);
 	} finally {
 		loading.value = false;
 	}
@@ -61,9 +63,9 @@ async function unlock() {
 		<div
 			class="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-sm bg-neutral-800 px-5 py-3 ring-1 ring-neutral-700"
 		>
-			<div class="flex flex-col gap-1 pr-10">
-				<h3>🔒This paste is password-protected.</h3>
-				<span class="text-left text-sm text-neutral-500">Enter the password to unlock it.</span>
+			<div class="flex flex-col gap-1 pr-20 text-left">
+				<h3>🔒This paste is encrypted.</h3>
+				<span class="text-left text-sm text-neutral-500">Enter the password to decrypt it.</span>
 			</div>
 			<div class="flex gap-1">
 				<input
@@ -76,7 +78,7 @@ async function unlock() {
 			</div>
 		</div>
 		<div class="flex grow flex-col opacity-50 blur-[2px]">
-			<Paste title="Locked Paste" :deadTitle="true" />
+			<Paste title="Encrypted Paste" :deadTitle="true" />
 		</div>
 	</template>
 	<template v-else-if="loading">

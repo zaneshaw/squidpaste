@@ -15,7 +15,7 @@ async function onNewPaste() {
 		const id = await newPaste(pasteTitle.value, pasteContent.value, "plain-text", password.value);
 		router.push({ path: `/${id}` });
 	} catch (err) {
-		// console.log(err);
+		console.error(err);
 	}
 }
 </script>
@@ -56,7 +56,9 @@ text content&#10;[link](https://example.com)</textarea
 		</div>
 		<div class="flex gap-2">
 			<div class="flex grow overflow-hidden rounded-sm ring-1 ring-neutral-700">
-				<div class="flex aspect-square h-full items-center justify-center bg-neutral-700 text-sm">🔒</div>
+				<div class="flex aspect-square h-full items-center justify-center bg-neutral-700 text-sm">
+					<span :class="{ [`opacity-50`]: password.length == 0 }">{{ password.length > 0 ? "🔒" : "🔓" }} </span>
+				</div>
 				<input type="password" placeholder="Optional password" maxlength="32" v-model="password" class="grow bg-neutral-900 px-2 text-sm outline-none" />
 			</div>
 			<button @click="onNewPaste" class="btn">Create paste</button>
@@ -64,7 +66,7 @@ text content&#10;[link](https://example.com)</textarea
 		<div class="flex flex-col gap-2 text-2xs text-neutral-400">
 			<div>
 				<p>Pastes are fully anonymous and stored permanently.</p>
-				<p>Password-protect any paste that contains sensitive information.</p>
+				<p>Encrypt pastes that contain sensitive information.</p>
 			</div>
 			<p>Pastes are limited to a maximum size of 128 KB.</p>
 		</div>
