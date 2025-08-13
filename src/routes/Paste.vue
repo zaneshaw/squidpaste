@@ -85,7 +85,7 @@ async function unlock() {
 		<span>Loading...</span>
 	</template>
 	<template v-else-if="error">
-		<h2>{{ error.status }}</h2>
+		<h3>{{ error.status }}</h3>
 		<span class="text-sm">{{ error.message }}</span>
 	</template>
 	<template v-else-if="paste">

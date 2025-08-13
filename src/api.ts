@@ -63,7 +63,7 @@ export async function newPaste(title: string, content: string, language: "plain-
 	if (password) {
 		// stored in plain text on the database
 		// only used to prevent an incorrect password from being used, which would yield a malformed paste
-		const magic = `~SQUIDPASTE_MAGIC_${String.fromCharCode(...crypto.getRandomValues(new Uint8Array(8)))
+		const magic = `~SQUIDPASTE_MAGIC${String.fromCharCode(...crypto.getRandomValues(new Uint8Array(8)))
 			.split("~")
 			.join("")}~`;
 		const data = new TextEncoder().encode(content + magic);

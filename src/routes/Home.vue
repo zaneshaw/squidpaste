@@ -63,12 +63,12 @@ text content&#10;[link](https://example.com)</textarea
 			</div>
 			<button @click="onNewPaste" class="btn">Create paste</button>
 		</div>
-		<div class="flex flex-col gap-2 text-2xs text-neutral-400">
+		<div class="flex flex-col gap-2 text-neutral-400">
 			<div>
-				<p>Pastes are fully anonymous and stored permanently.</p>
-				<p>Encrypt pastes that contain sensitive information.</p>
+				<p class="text-2xs">Pastes are fully anonymous and stored permanently.</p>
+				<p class="text-2xs">Encrypt pastes that contain sensitive information.</p>
 			</div>
-			<p>Pastes are limited to a maximum size of 128 KB.</p>
+			<p class="text-2xs">Pastes are limited to a maximum size of 128 KB.</p>
 		</div>
 	</div>
 </template>

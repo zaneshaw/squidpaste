@@ -5,7 +5,7 @@ import App from "./App.vue";
 
 import Home from "./routes/Home.vue";
 import Help from "./routes/Help.vue";
-import Security from "./routes/Security.vue";
+import Privacy from "./routes/Privacy.vue";
 import Paste from "./routes/Paste.vue";
 import Error from "./routes/Error.vue";
 
@@ -14,7 +14,7 @@ export const router = createRouter({
 	routes: [
 		{ path: "/", component: Home },
 		{ path: "/help", component: Help },
-		{ path: "/security", component: Security },
+		{ path: "/privacy", component: Privacy },
 		{ path: "/:pasteId", component: Paste },
 		{ path: "/:error(.*)", component: Error }
 	]
