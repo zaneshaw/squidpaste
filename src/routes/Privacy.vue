@@ -6,5 +6,6 @@
 			Password-protected pastes are encrypted and decrypted on the client, meaning passwords are never hashed or sent to my server. You are solely responsible
 			for remembering your password. If you lose it, know that I have no way of recovering your paste.
 		</p>
+		<p>A paste's title, language (plain-text, c, etc) and time of creation are <b>NOT</b> encrypted! Only the content/body is encrypted.</p>
 	</div>
 </template>
